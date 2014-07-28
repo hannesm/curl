@@ -29,8 +29,21 @@ void ocamltls_close (struct connectdata *conn, int sockindex) {
 }
 
 CURLcode ocamltls_connect_common (struct connectdata *conn, int sockindex) {
+  /* see urldata.h for connectdata et al struct definition */
   /*  conn->recv[sockindex] = ocamltls_recv;
-      conn->send[sockindex] = ocamltls_send; */
+      conn->send[sockindex] = ocamltls_send;
+  rsa_free(&conn->ssl[sockindex].rsa);
+  x509_crt_free(&conn->ssl[sockindex].clicert);
+  x509_crt_free(&conn->ssl[sockindex].cacert);
+  x509_crl_free(&conn->ssl[sockindex].crl);
+  ssl_free(&conn->ssl[sockindex].ssl);
+
+  struct ssl_connect_data* connssl = &conn->ssl[sockindex];
+  ssl_session *our_ssl_sessionid = &conn->ssl[sockindex].ssn ;
+  ret = ssl_write(&conn->ssl[sockindex].ssl,
+                  (unsigned char *)mem, len);
+
+  */
   return NULL
 }
 
